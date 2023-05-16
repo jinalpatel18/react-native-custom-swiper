@@ -30,7 +30,19 @@ class Swiper extends React.Component {
         this.props.currentSelectIndex < this.props.swipeData.length
           ? this.props.currentSelectIndex
           : this.props.swipeData.length - 1,
-      childViewHeight: height
+      childViewHeight: height,
+      dotStyle: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.number,
+        PropTypes.array
+      ]),
+      activeDotStyle: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.number,
+        PropTypes.array
+      ]),
+      dotColor: PropTypes.string,
+      activeDotColor: PropTypes.string,
     };
 
     this.viewabilityConfig = { viewAreaCoveragePercentThreshold: 50 };
@@ -121,8 +133,6 @@ class Swiper extends React.Component {
         style={[
           {
             width: this.props.containerWidth,
-            justifyContent: "center",
-            alignItems: "center",
             backgroundColor: this.state.arrSwipeData[index]
           }
         ]}
@@ -182,11 +192,11 @@ class Swiper extends React.Component {
         ) : null}
 
         {this.state.currentSelectIndex < this.state.arrSwipeData.length - 1 &&
-        this.state.showSwipeBtn ? (
+          this.state.showSwipeBtn ? (
           <View
             style={[
               styles.IconStyle,
-              { right: 15, height: this.state.childViewHeight }
+              { right: 5, height: this.state.childViewHeight }
             ]}
           >
             <View style={styles.viewBtn}>
@@ -199,6 +209,29 @@ class Swiper extends React.Component {
             </View>
           </View>
         ) : null}
+
+        <View style={{backgroundColor: '#4d6fa9', display: 'flex', flexDirection: 'row', justifyContent: 'center',
+      alignItems: 'center', marginBottom: 12}}>
+        {this.state.arrSwipeData.map((item, index) => {
+            return (
+              <View
+              style={[
+                {
+                  backgroundColor: this.state.currentSelectIndex == index ? 'white' : '#1f2b47',
+                  width: 12,
+                  height: 12,
+                  borderRadius: 6,
+                  marginLeft: 3,
+                  marginRight: 3,
+                  marginTop: 3,
+                  marginBottom: 3
+                }
+              ]}
+            />
+            );
+          })
+          }
+        </View>
       </View>
     );
   }
@@ -220,14 +253,15 @@ const styles = StyleSheet.create({
   },
   IconImageView: {
     width: 40,
-    height: 40
+    height: 30,
+    tintColor: 'white'
   },
   viewBtn: {
-    height: 60,
-    width: 60,
+    height: 40,
+    width: 40,
     borderRadius: 60 / 2,
-    backgroundColor: "white",
-    opacity: 0.3,
+    //backgroundColor: "white",
+    opacity: 1,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -266,7 +300,7 @@ Swiper.defaultProps = {
   showSwipeBtn: true,
   autoplayTimeout: 2500,
   autoplay: false,
-  onScreenChange: () => {}
+  onScreenChange: () => { }
 };
 
 export default Swiper;
